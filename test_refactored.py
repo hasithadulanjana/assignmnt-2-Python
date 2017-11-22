@@ -4,7 +4,28 @@ from file_handler import FileHandler
 
 
 class RefactoredCode(unittest.TestCase):
+    def test_csv(self):
+        fh = FileHandler(Validator())
+        actual = fh.open('data.png')[0]
+        expected = {'EMPID': 'A001',
+                    'GENDER': 'FM',
+                    'AGE': '2w',
+                    'SALES': '001',
+                    'BMI': 'No34r',
+                    'SALARY': '123',
+                    'BIRTHDAY': '1-1-1996'}
 
+        def test_csv(self):
+            fh = FileHandler(Validator())
+            actual = fh.open('help.txt')[0]
+            expected = {'EMPID': 'A001',
+                        'GENDER': 'FM',
+                        'AGE': '2w',
+                        'SALES': '001',
+                        'BMI': 'No34r',
+                        'SALARY': '123',
+                        'BIRTHDAY': '1-1-1996'}
+        self.assertEquals(actual, expected)
     def test_csv(self):
         fh = FileHandler(Validator())
         actual = fh.open('data.csv')[0]
@@ -61,6 +82,8 @@ class RefactoredCode(unittest.TestCase):
         # Rosemary
         self.assertTrue(v.check_gender('M'))
         self.assertTrue(v.check_gender('F'))
+        self.assertTrue(v.check_gender('0'))
+        self.assertTrue(v.check_gender(''))
         # Tim
         self.assertFalse(v.check_gender('m'))
         self.assertFalse(v.check_gender('f'))
@@ -121,6 +144,7 @@ class RefactoredCode(unittest.TestCase):
         self.assertFalse(v.check_bmi('Underweight2'))
         self.assertFalse(v.check_bmi('UNDERWEIGHT'))
         self.assertFalse(v.check_bmi(""))
+        self.assertTrue(v.check_bmi("lol"))
         self.assertFalse(v.check_bmi(1))
         self.assertFalse(v.check_bmi(True))
 
@@ -133,12 +157,14 @@ class RefactoredCode(unittest.TestCase):
         self.assertTrue(v.check_in_attributes('SALES'))
         self.assertTrue(v.check_in_attributes('BMI'))
         self.assertTrue(v.check_in_attributes('SALARY'))
+        self.assertTrue(v.check_in_attributes('9999'))
         self.assertTrue(v.check_in_attributes("BIRTHDAY"))
         self.assertTrue(v.check_in_attributes("birthday"))
         self.assertFalse(v.check_in_attributes(True))
         self.assertFalse(v.check_in_attributes(['EMPID', 'GENDER']))
         self.assertFalse(v.check_in_attributes(None))
         self.assertFalse(v.check_in_attributes(1))
+        self.assertTrue(v.check_in_attributes(23333))
 
 suite = unittest.TestLoader().loadTestsFromTestCase(RefactoredCode)
 unittest.TextTestRunner(verbosity=1).run(suite)
