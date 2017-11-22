@@ -5,6 +5,7 @@ import re
 import datetime as date
 from rule_chcker import RuleChecker
 
+
 # Tim
 class IFileValidator(metaclass=ABCMeta):
     @abstractmethod
@@ -31,7 +32,8 @@ class IFileValidator(metaclass=ABCMeta):
 class Validator(IFileValidator):
 
     # Tim
-    def __init__(self):
+    def __init__(self,id_rule,gender_rule,age_rule):
+        IFileValidator.__init__(id_rule)
         self.id_rule = "^[A-Z][0-9]{3}$"
         self.gender_rule = "^(M|F)$"
         self.age_rule = "^[0-9]{2}$"
@@ -100,6 +102,25 @@ class Validator(IFileValidator):
     # Tim
     def check_birthday_against_age(self, birthday, age):
 
+        """
+                >>> v = Validator()
+                >>> v.check_birthday_against_age('19-06-19828', 28)
+                False
+                >>> v.check_birthday_against_age('19-06-1988', 29)
+                True
+                >>> v.check_birthday_against_age('19-06-1988', 30)
+                False
+                >>> v.check_birthday_against_age('19-12-1988', 27)
+                False
+                >>> v.check_birthday_against_age('19-12-1988', 28)
+                True
+                 >>> v.check_birthday_against_age('19-06-1988', 28)
+                False
+                >>> v.check_birthday_against_age('19-12-1988', 29)
+                False
+                >>> v.check_birthday_against_age('19-12-1988', 30)
+                False
+                """
         if not self.check_birthday(birthday):
             return False
         else:
@@ -122,6 +143,37 @@ class Validator(IFileValidator):
 
     # Tim
     def check_in_attributes(self, query_attribute):
+        """
+              >>> v = Validator()
+              >>> v.check_in_attributes("EMPID")
+              True
+              >>> v.check_in_attributes("EmpID")
+              False
+              >>> v.check_in_attributes("GENDER")
+              True
+              >>> v.check_in_attributes("M")
+              False
+              >>> v.check_in_attributes("AGE")
+              True
+               >>> v.check_in_attributes("-96")
+              False
+              >>> v.check_in_attributes("SALES")
+              True
+              >>> v.check_in_attributes("BMI")
+              True
+              >>> v.check_in_attributes("SALARY")
+              True
+              >>> v.check_in_attributes("BIRTHDAY")
+              True
+              >>> v.check_in_attributes("Salary")
+              True
+               >>> v.check_in_attributes("Computer Sales")
+               False
+              >>> v.check_in_attributes("SALE")
+              False
+              >>> v.check_in_attributes(1)
+              False
+              """
         try:
             return query_attribute.upper() in self.attributes
         except AttributeError:
