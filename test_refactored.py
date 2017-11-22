@@ -2,7 +2,9 @@ import unittest
 from validator import Validator
 from file_handler import FileHandler
 
-class refactored_code(unittest.TestCase):
+
+class RefactoredCode(unittest.TestCase):
+
     def test_csv(self):
         fh = FileHandler(Validator())
         actual = fh.open('data.csv')[0]
@@ -42,7 +44,7 @@ class refactored_code(unittest.TestCase):
 
     def test_invalid(self):
         fh = FileHandler(Validator())
-        actual = fh.open('refactoring/csvTest.cs2v')
+        actual = fh.open('csvTest.cs2v')
         expected = False
         self.assertEquals(actual, expected)
 
@@ -138,5 +140,5 @@ class refactored_code(unittest.TestCase):
         self.assertFalse(v.check_in_attributes(None))
         self.assertFalse(v.check_in_attributes(1))
 
-suite = unittest.TestLoader().loadTestsFromTestCase(refactored_code)
+suite = unittest.TestLoader().loadTestsFromTestCase(RefactoredCode)
 unittest.TextTestRunner(verbosity=1).run(suite)
